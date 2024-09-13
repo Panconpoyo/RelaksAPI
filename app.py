@@ -1,12 +1,17 @@
 from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
+import os
 
 # Cargar el modelo previamente entrenado y guardado
 model = tf.keras.models.load_model('relaks_model_v01.h5')
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Hello, I'm aliveee!"
 
 # Ruta para realizar predicciones
 @app.route('/predict', methods=['POST'])
@@ -44,4 +49,5 @@ def predict():
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
